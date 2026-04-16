@@ -45,12 +45,40 @@ size_t	find_char_index(char *s, int c)
 	while(s[i])
 	{
 		if(s[i] == c)
-			return (i + 1);
+			return (i);
 		i++;
 	}
 	return (0);
 }
 
+
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	char	*sjoin;
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = 0;
+	if (!s1 || !s2)
+		return (NULL);
+	sjoin = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (!sjoin)
+		return (NULL);
+	while (s1[i])
+	{
+		sjoin[j++] = s1[i];
+		i++;
+	}
+	i = 0;
+	while (s2[i])
+	{
+		sjoin[j++] = s2[i];
+		i++;
+	}
+	sjoin[j] = '\0';
+	return (sjoin);
+}
 
 size_t	ft_strlen(const char *s)
 {
