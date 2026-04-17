@@ -24,13 +24,14 @@ char	*get_next_line(int fd)
 
 	bytes_read = 1;
 	index = 0;
-	tmp = "";
-	buffer = malloc(sizeof(char) * (BUFFER_SIZE));
+	tmp = after_s;
+	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if(!buffer)
 		return (NULL);
 	while (bytes_read >= 0)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		buffer[BUFFER_SIZE] = '\0';
 		if(bytes_read <= 0)
 		{
 			if (after_s)
@@ -42,7 +43,10 @@ char	*get_next_line(int fd)
 			free(buffer);
 			return (NULL);
 		}
-		tmp = ft_strjoin(tmp,buffer);
+		if(!tmp)
+			tmp = buffer;
+		else
+			tmp = ft_strjoin(tmp,buffer);
 		index = find_char_index(tmp, '\n');
 		if(index >= 0)
 		{
@@ -51,15 +55,16 @@ char	*get_next_line(int fd)
 			else
 				before_s =  ft_substr(tmp, 0, index + 1);
 			free(after_s);
-			after_s = ft_substr(tmp, index + 1, 100);
+			after_s = ft_substr(tmp, index + 1, ft_strlen(tmp) - (index + 1));
 			free(tmp);
+			free(buffer);
 			return (before_s);
 		}
 	}
-	return(buffer);
+	return (buffer);
 }
 #include <fcntl.h>
-//test
+
 int main(void)
 {
   int    fd;
@@ -74,7 +79,8 @@ int main(void)
 	  if(next_line == NULL)
 	  	break;
 	  count++;
-	  printf("[%d]:%s\n", count, next_line);
+	  printf("[%d]:%s", count, next_line);
+	  free(next_line);
 	  next_line = NULL;
 }
   close(fd);
