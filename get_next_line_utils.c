@@ -37,9 +37,9 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (sub);
 }
 
-size_t	find_char_index(char *s, int c)
+int	find_char_index(char *s, int c)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
 	while(s[i])
@@ -48,7 +48,23 @@ size_t	find_char_index(char *s, int c)
 			return (i);
 		i++;
 	}
-	return (0);
+	return (-1);
+}
+
+char	*ft_strchr(const char *s, int c)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == (unsigned char) c)
+			return ((char *) &s[i]);
+		i++;
+	}
+	if ((unsigned char) c == '\0')
+		return ((char *) &s[i]);
+	return (NULL);
 }
 
 

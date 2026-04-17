@@ -20,9 +20,8 @@ char	*get_next_line(int fd)
 	char		*tmp;
 	static char	*after_s;
 	int			bytes_read;
-	size_t		index;
+	int			index;
 
-	after_s = "";
 	bytes_read = 1;
 	index = 0;
 	tmp = "";
@@ -32,22 +31,27 @@ char	*get_next_line(int fd)
 	while (bytes_read >= 0)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		printf("BytesRead: %d\n", bytes_read);
 		if(bytes_read <= 0)
 		{
+			if (after_s)
+			{
+				tmp = after_s;
+				after_s = NULL;
+				return (tmp);
+			}
 			free(buffer);
 			return (NULL);
 		}
+		tmp = ft_strjoin(tmp,buffer);
 		index = find_char_index(tmp, '\n');
-		if(index == 0)
+		if(index >= 0)
 		{
-			tmp = ft_strjoin(tmp,buffer);
-		}
-		printf("tmp: %s\n", tmp);
-		if(index != 0)
-		{
-			printf("Index: %zu\n", index);
-			before_s =  ft_substr(tmp, 0, index);
+			if(after_s)
+				before_s = ft_strjoin(after_s, ft_substr(tmp, 0, index + 1));
+			else
+				before_s =  ft_substr(tmp, 0, index + 1);
+			free(after_s);
+			after_s = ft_substr(tmp, index + 1, 100);
 			free(tmp);
 			return (before_s);
 		}
@@ -64,8 +68,6 @@ int main(void)
 
   count = 0;
   fd = open("example.txt", O_RDONLY);
-	printf("[%d]\n", count);
-
   while(1)
   {
 	  next_line = get_next_line(fd);
