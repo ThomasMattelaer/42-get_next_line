@@ -17,7 +17,9 @@
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 10
 # endif
-
+# if BUFFER_SIZE <= 0 || BUFFER_SIZE > 0x7ffff000
+#  error "Invalid buffer size"
+# endif
 # include <unistd.h>
 # include <stdlib.h>
 

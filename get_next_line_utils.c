@@ -51,23 +51,6 @@ int	find_char_index(char *s, int c)
 	return (-1);
 }
 
-char	*ft_strchr(const char *s, int c)
-{
-	int	i;
-
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == (unsigned char) c)
-			return ((char *) &s[i]);
-		i++;
-	}
-	if ((unsigned char) c == '\0')
-		return ((char *) &s[i]);
-	return (NULL);
-}
-
-
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*sjoin;
@@ -76,7 +59,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 	i = 0;
 	j = 0;
-	if (!s1 || !s2)
+	if (!s2)
 		return (NULL);
 	sjoin = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!sjoin)
@@ -105,4 +88,6 @@ size_t	ft_strlen(const char *s)
 		i++;
 	return (i);
 }
+
+
 
