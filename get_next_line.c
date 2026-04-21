@@ -70,7 +70,10 @@ char	*get_next_line(int fd)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read <= 0)
+		{
+			buffer[0] = '\0';
 			return (line);
+		}
 		buffer[bytes_read] = '\0';
 		if (find_char_index(buffer, '\n') >= 0)
 			return (extract_line(buffer, line));
