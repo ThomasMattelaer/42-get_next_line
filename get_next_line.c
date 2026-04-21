@@ -47,7 +47,7 @@ static char	*extract_line(char *buffer, char *line)
 	n = ft_strlen(buffer) - (index + 1);
 	p = -1;
 	while (++p < n)
-		buffer[p] = (buffer)[index + 1 + p];
+		buffer[p] = buffer[index + 1 + p];
 	buffer[n] = '\0';
 	return (res);
 }
@@ -94,7 +94,8 @@ char	*get_next_line(int fd)
 // 	fd = open("example.txt", O_RDONLY);
 // 	while(1)
 // 	{
-// 		next_line = get_next_line(fd);
+// 		next_line = get_next_line(1);
+// 		printf("%s", next_line);
 // 		if (next_line == NULL)
 // 			break;
 // 		count++;

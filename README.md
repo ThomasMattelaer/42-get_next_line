@@ -75,7 +75,7 @@ The implementation is based on a **persistent buffer strategy** using a static v
 
 ### Core Idea
 
-The function maintains a static string (`after_s`) that stores leftover data between function calls. This allows the function to "remember" what was read but not yet returned.
+The function maintains a static string (`buffer`) that stores leftover (after the '\n') between function calls. This allows the function to "remember" what was read but not yet returned.
 
 ### Steps
 
@@ -119,7 +119,7 @@ This approach ensures:
 
 * **Static Variable**: Used to persist leftover data across function calls.
 * **Dynamic Allocation**: Ensures flexibility in handling variable-length lines.
-* **Custom String Functions**: (`ft_strjoin`, `ft_substr`, etc.) for controlled memory behavior.
+* **Custom String Functions**: (`ft_strjoin`, `ft_substr`, `ft_strdup`, etc.)
 * **Buffer Size**: Defined via `BUFFER_SIZE` macro to allow flexible read sizes.
 
 ---
@@ -129,6 +129,7 @@ This approach ensures:
 ### Documentation & References
 
 * The GNU C Library documentation (`read`, `malloc`, `free`)
+* Geeks for Geeks - Dynamic Memory Allocation in C 
 * Manual pages:
 
   ```bash
@@ -144,6 +145,9 @@ This approach ensures:
 * https://www.rapidtables.com/code/linux/gcc/gcc-d.html
 * https://www.codequoi.com/variables-locales-globales-statiques-en-c/
 * https://medium.com/@lannur-s/gnl-c3cff1ee552b
+* https://raw.githubusercontent.com/mxw/grmr/master/src/finaltests/bible.txt
+* https://www.youtube.com/playlist?list=PLc4DnsRQbs6ZTJ-CxxtYlec3KyfIU1tQD
+*
 
 ### AI Usage
 
