@@ -11,9 +11,8 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 
-static void add_to_line(char *buffer, char **line)
+static void	add_to_line(char *buffer, char **line)
 {
 	char	*tmp;
 
@@ -36,16 +35,15 @@ static char	*extract_line(char *buffer, char *line)
 	char	*res;
 
 	index = find_char_index(buffer, '\n');
-	if(index < 0)
+	if (index < 0)
 		return (NULL);
-
 	substr = ft_substr(buffer, 0, index + 1);
 	if (!line)
 		res = ft_strdup(substr);
 	else
-    	res = ft_strjoin(line, substr);
-	free(substr);
-	free(line);
+		res = ft_strjoin(line, substr);
+	free (substr);
+	free (line);
 	n = ft_strlen(buffer) - (index + 1);
 	p = -1;
 	while (++p < n)
@@ -54,7 +52,7 @@ static char	*extract_line(char *buffer, char *line)
 	return (res);
 }
 
-char *get_next_line(int fd)
+char	*get_next_line(int fd)
 {
 	static char	buffer[BUFFER_SIZE + 1];
 	char		*line;
@@ -74,32 +72,33 @@ char *get_next_line(int fd)
 		if (bytes_read <= 0)
 			return (line);
 		buffer[bytes_read] = '\0';
-		if(find_char_index(buffer, '\n') >= 0)
+		if (find_char_index(buffer, '\n') >= 0)
 			return (extract_line(buffer, line));
 		add_to_line(buffer, &line);
 	}
 }
 
-#include <fcntl.h>
+// #include <fcntl.h>
+// #include <stdio.h>
 
-int main(void)
-{
-	int    fd;
-	char  *next_line;
-	int  count;
+// int main(void)
+// {
+// 	int    fd;
+// 	char  *next_line;
+// 	int  count;
 
-	count = 0;
-	fd = open("example.txt", O_RDONLY);
-	while(1)
-	{
-		next_line = get_next_line(fd);
-		if (next_line == NULL)
-			break;
-		count++;
-		printf("[%d]:%s", count, next_line);
-		free(next_line);
-		next_line = NULL;
-	}
-	close(fd);
-	return (0);
-}
+// 	count = 0;
+// 	fd = open("example.txt", O_RDONLY);
+// 	while(1)
+// 	{
+// 		next_line = get_next_line(fd);
+// 		if (next_line == NULL)
+// 			break;
+// 		count++;
+// 		printf("[%d]:%s", count, next_line);
+// 		free(next_line);
+// 		next_line = NULL;
+// 	}
+// 	close(fd);
+// 	return (0);
+// }

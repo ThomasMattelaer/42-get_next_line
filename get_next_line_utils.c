@@ -12,7 +12,6 @@
 
 #include "get_next_line.h"
 
-
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char	*sub;
@@ -42,9 +41,9 @@ int	find_char_index(char *s, int c)
 	int	i;
 
 	i = 0;
-	while(s[i])
+	while (s[i])
 	{
-		if(s[i] == c)
+		if (s[i] == c)
 			return (i);
 		i++;
 	}
@@ -106,6 +105,3 @@ char	*ft_strdup(const char *s)
 	dup[i] = '\0';
 	return (dup);
 }
-
-
-
