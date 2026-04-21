@@ -3,119 +3,103 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmattela <tmattela@student.42belgium.com>  #+#  +:+       +#+        */
+/*   By: tmattela <tmattela@student.42belgium.be>   #+#  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026-04-16 08:34:44 by tmattela          #+#    #+#             */
-/*   Updated: 2026-04-16 08:34:44 by tmattela         ###   ########.fr       */
+/*   Created: 2026-04-21 10:40:24 by tmattela          #+#    #+#             */
+/*   Updated: 2026-04-21 10:40:24 by tmattela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stdio.h>
 
-static char *get_next_line(int fd)
+static void add_to_line(char *buffer, char **line)
 {
-	static char	buffer[BUFFER_SIZE + 1] = {0};
-	char		*line;
-	int			bytes_read;
-	int			index;
+	char	*tmp;
 
-	line = NULL;
-	// check if buufer contains '\0' (specifities to be determined)
-		// join buff to line
-
-	bytes_read = read(fd, buffer, BUFFER_SIZE);
-	buffer[bytes_read] = '\0';
-	if(bytes_read >= 0) //a checker in case of EOF
-		return (NULL);
-	while (bytes_read > 0)
+	if (!*line)
+		*line = ft_strdup(buffer);
+	else
 	{
-		index = find_char_index(buffer, '\n');
-		if (index >= 0)
-		{
-			line = ft_substr(buffer, 0, index + 1); // include the \n
-			int n = bytes_read - (index + 1);
-			int p = -1;
-			while(++p < n)
-				buffer[p] = n;
-			buffer[n] = '\0';
-			return (line);
-		}
-		ft_strjoin(line, buffer);
-		bytes_read = read(fd, buffer, BUFFER_SIZE);
-
+		tmp = ft_strjoin(*line, buffer);
+		free(*line);
+		*line = tmp;
 	}
-	return (line);
 }
 
-// char	*get_next_line(int fd)
-// {
-// 	char		*buffer;
-// 	char		*before_s;
-// 	char		*tmp;
-// 	static char	*rest;
-// 	int			index;
+static char	*extract_line(char *buffer, char *line)
+{
+	int		index;
+	int		n;
+	int		p;
+	char	*substr;
+	char	*res;
 
-// 	index = 0;
-// 	tmp = rest;
-// 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-// 	if(!buffer)
-// 		return (NULL);
-// 	while (bytes_read >= 0)
-// 	{
-// 		if(bytes_read <= 0)
-// 		{
-// 			if (rest)
-// 			{
-// 				tmp = rest;
-// 				rest = NULL;
-// 				return (tmp);
-// 			}
-// 			free(buffer);
-// 			return (NULL);
-// 		}
-// 		if(!tmp)
-// 			tmp = buffer;
-// 		else
-// 			tmp = ft_strjoin(tmp,buffer);
-// 		index = find_char_index(tmp, '\n');
-// 		if(index >= 0)
-// 		{
-// 			if(rest)
-// 				before_s = ft_strjoin(rest, ft_substr(tmp, 0, index + 1));
-// 			else
-// 				before_s =  ft_substr(tmp, 0, index + 1);
-// 			free(rest);
-// 			rest = ft_substr(tmp, index + 1, ft_strlen(tmp) - (index + 1));
-// 			free(tmp);
-// 			free(buffer);
-// 			return (before_s);
-// 		}
-// 	}
-// 	return (buffer);
-// }
+	index = find_char_index(buffer, '\n');
+	if(index < 0)
+		return (NULL);
+
+	substr = ft_substr(buffer, 0, index + 1);
+	if (!line)
+		res = ft_strdup(substr);
+	else
+    	res = ft_strjoin(line, substr);
+	free(substr);
+	free(line);
+	n = ft_strlen(buffer) - (index + 1);
+	p = -1;
+	while (++p < n)
+		buffer[p] = (buffer)[index + 1 + p];
+	buffer[n] = '\0';
+	return (res);
+}
+
+char *get_next_line(int fd)
+{
+	static char	buffer[BUFFER_SIZE + 1];
+	char		*line;
+	int			bytes_read;
+
+	line = NULL;
+	if (buffer[0] != '\0')
+	{
+		if (find_char_index(buffer, '\n') >= 0)
+			return (extract_line(buffer, line));
+		line = ft_strdup(buffer);
+		buffer[0] = '\0';
+	}
+	while (1)
+	{
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		if (bytes_read <= 0)
+			return (line);
+		buffer[bytes_read] = '\0';
+		if(find_char_index(buffer, '\n') >= 0)
+			return (extract_line(buffer, line));
+		add_to_line(buffer, &line);
+	}
+}
+
 #include <fcntl.h>
 
 int main(void)
 {
-  int    fd;
-  char  *next_line;
-  int  count;
+	int    fd;
+	char  *next_line;
+	int  count;
 
-  count = 0;
-  fd = open("example.txt", O_RDONLY);
-//   next_line = get_next_line(fd);
-
-  while(1)
-  {
-	  next_line = ft_read_fd(fd);
-	  if(next_line == NULL)
-	  	break;
-	  count++;
-	  printf("[%d]:%s", count, next_line);
-	  free(next_line);
-	  next_line = NULL;
-}
-  close(fd);
-  return (0);
+	count = 0;
+	fd = open("example.txt", O_RDONLY);
+	while(1)
+	{
+		next_line = get_next_line(fd);
+		if (next_line == NULL)
+			break;
+		count++;
+		printf("[%d]:%s", count, next_line);
+		free(next_line);
+		next_line = NULL;
+	}
+	close(fd);
+	return (0);
 }

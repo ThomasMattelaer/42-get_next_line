@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmattela <tmattela@student.42belgium.com>  #+#  +:+       +#+        */
+/*   By: tmattela <tmattela@student.42belgium.be>   #+#  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026-04-16 12:23:24 by tmattela          #+#    #+#             */
-/*   Updated: 2026-04-16 12:23:24 by tmattela         ###   ########.fr       */
+/*   Created: 2026-04-21 10:40:33 by tmattela          #+#    #+#             */
+/*   Updated: 2026-04-21 10:40:33 by tmattela         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,24 @@ size_t	ft_strlen(const char *s)
 	while (s[i])
 		i++;
 	return (i);
+}
+
+char	*ft_strdup(const char *s)
+{
+	char	*dup;
+	size_t	i;
+
+	i = 0;
+	dup = malloc(sizeof(char) * (ft_strlen(s) + 1));
+	if (!dup)
+		return (NULL);
+	while (s[i])
+	{
+		dup[i] = s[i];
+		i++;
+	}
+	dup[i] = '\0';
+	return (dup);
 }
 
 
