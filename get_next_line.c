@@ -12,6 +12,17 @@
 
 #include "get_next_line.h"
 
+static char	*end_of_read(char *line, char *buffer, int bytes_read)
+{
+	buffer[0] = '\0';
+	if (bytes_read < 0)
+	{
+		free(line);
+		return (NULL);
+	}
+	return (line);
+}
+
 static void	add_to_line(char *buffer, char **line)
 {
 	char	*tmp;
@@ -59,6 +70,8 @@ char	*get_next_line(int fd)
 	int			bytes_read;
 
 	line = NULL;
+	if (fd < 0)
+		return (NULL);
 	if (buffer[0] != '\0')
 	{
 		if (find_char_index(buffer, '\n') >= 0)
@@ -70,10 +83,7 @@ char	*get_next_line(int fd)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read <= 0)
-		{
-			buffer[0] = '\0';
-			return (line);
-		}
+			return (end_of_read(line, buffer, bytes_read));
 		buffer[bytes_read] = '\0';
 		if (find_char_index(buffer, '\n') >= 0)
 			return (extract_line(buffer, line));
@@ -88,6 +98,7 @@ char	*get_next_line(int fd)
 // {
 // 	int    fd;
 // 	char  *next_line;
+// 	char  *second_line;
 // 	int  count;
 
 // 	count = 0;
@@ -95,11 +106,13 @@ char	*get_next_line(int fd)
 // 	while(1)
 // 	{
 // 		next_line = get_next_line(1);
+// 		second_line = get_next_line(fd);
 // 		printf("%s", next_line);
 // 		if (next_line == NULL)
 // 			break;
 // 		count++;
 // 		printf("[%d]:%s", count, next_line);
+// 		printf("[%d]:%s", count, second_line);
 // 		free(next_line);
 // 		next_line = NULL;
 // 	}
