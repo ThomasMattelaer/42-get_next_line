@@ -96,23 +96,19 @@ char	*get_next_line(int fd)
 // int main(void)
 // {
 // 	int		fd;
-// 	int		fd2;
 // 	char	*next_line;
 // 	char	*second_line;
 // 	int		count;
 
 // 	count = 0;
 // 	fd = open("example.txt", O_RDONLY);
-// 	fd2 = open("example2.txt", O_RDONLY);
 // 	while(1)
 // 	{
 // 		next_line = get_next_line(fd);
-// 		second_line = get_next_line(fd2);
 // 		if (next_line == NULL)
 // 			break;
 // 		count++;
 // 		printf("[%d]:%s", count, next_line);
-// 		printf("[%d]:%s", count, second_line);
 // 		free(next_line);
 // 		next_line = NULL;
 // 	}
