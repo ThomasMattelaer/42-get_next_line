@@ -65,58 +65,58 @@ static char	*extract_line(char *buffer, char *line)
 
 char	*get_next_line(int fd)
 {
-	static char	buffer[BUFFER_SIZE + 1];
+	static char	buffer[OPEN_MAX][BUFFER_SIZE + 1];
 	char		*line;
 	int			bytes_read;
 
 	line = NULL;
 	if (fd < 0)
 		return (NULL);
-	if (buffer[0] != '\0')
+	if (buffer[fd][0] != '\0')
 	{
-		if (find_char_index(buffer, '\n') >= 0)
-			return (extract_line(buffer, line));
-		line = ft_strdup(buffer);
-		buffer[0] = '\0';
+		if (find_char_index(buffer[fd], '\n') >= 0)
+			return (extract_line(buffer[fd], line));
+		line = ft_strdup(buffer[fd]);
+		buffer[fd][0] = '\0';
 	}
 	while (1)
 	{
-		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		bytes_read = read(fd, buffer[fd], BUFFER_SIZE);
 		if (bytes_read <= 0)
-			return (end_of_read(line, buffer, bytes_read));
-		buffer[bytes_read] = '\0';
-		if (find_char_index(buffer, '\n') >= 0)
-			return (extract_line(buffer, line));
-		add_to_line(buffer, &line);
+			return (end_of_read(line, buffer[fd], bytes_read));
+		buffer[fd][bytes_read] = '\0';
+		if (find_char_index(buffer[fd], '\n') >= 0)
+			return (extract_line(buffer[fd], line));
+		add_to_line(buffer[fd], &line);
 	}
 }
 
-#include <fcntl.h>
-#include <stdio.h>
+// #include <fcntl.h>
+// #include <stdio.h>
 
-int main(void)
-{
-	int		fd;
-	int		fd2;
-	char	*next_line;
-	char	*second_line;
-	int		count;
+// int main(void)
+// {
+// 	int		fd;
+// 	int		fd2;
+// 	char	*next_line;
+// 	char	*second_line;
+// 	int		count;
 
-	count = 0;
-	fd = open("example.txt", O_RDONLY);
-	fd2 = open("example2.txt", O_RDONLY);
-	while(1)
-	{
-		next_line = get_next_line(fd);
-		second_line = get_next_line(fd2);
-		if (next_line == NULL)
-			break;
-		count++;
-		printf("[%d]:%s", count, next_line);
-		printf("[%d]:%s", count, second_line);
-		free(next_line);
-		next_line = NULL;
-	}
-	close(fd);
-	return (0);
-}
+// 	count = 0;
+// 	fd = open("example.txt", O_RDONLY);
+// 	fd2 = open("example2.txt", O_RDONLY);
+// 	while(1)
+// 	{
+// 		next_line = get_next_line(fd);
+// 		second_line = get_next_line(fd2);
+// 		if (next_line == NULL)
+// 			break;
+// 		count++;
+// 		printf("[%d]:%s", count, next_line);
+// 		printf("[%d]:%s", count, second_line);
+// 		free(next_line);
+// 		next_line = NULL;
+// 	}
+// 	close(fd);
+// 	return (0);
+// }

@@ -129,7 +129,7 @@ This approach ensures:
 ### Documentation & References
 
 * The GNU C Library documentation (`read`, `malloc`, `free`)
-* Geeks for Geeks - Dynamic Memory Allocation in C 
+* Geeks for Geeks - Dynamic Memory Allocation in C
 * Manual pages:
 
   ```bash
@@ -147,7 +147,7 @@ This approach ensures:
 * https://medium.com/@lannur-s/gnl-c3cff1ee552b
 * https://raw.githubusercontent.com/mxw/grmr/master/src/finaltests/bible.txt
 * https://www.youtube.com/playlist?list=PLc4DnsRQbs6ZTJ-CxxtYlec3KyfIU1tQD
-*
+* https://pubs.opengroup.org/onlinepubs/009696599/basedefs/limits.h.html
 
 ### AI Usage
 
